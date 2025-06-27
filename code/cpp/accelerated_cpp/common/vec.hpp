@@ -6,7 +6,6 @@
 #include <cstddef>
 #include <memory>
 
-
 template<typename T>
 class Vec
 {
