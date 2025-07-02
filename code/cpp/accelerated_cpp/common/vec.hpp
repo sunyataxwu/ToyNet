@@ -3,6 +3,7 @@
 #ifndef __ACCELERATED_CPP_VEC_H__
 #define __ACCELERATED_CPP_VEC_H__
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 
@@ -32,6 +33,7 @@ public:
     const_iterator  End() const { return limit; }
 
     void Clear() { UnCreate(); }
+    iterator Erase( iterator pos );
     void push_back(const T &val);
 private:
     void Create();
@@ -58,6 +60,17 @@ Vec<T>& Vec<T>::operator=(const Vec &rhs)
         Create(rhs.Begin(), rhs.End());
     }
     return *this;
+}
+
+template<typename T>
+typename Vec<T>::iterator Vec<T>::Erase( iterator pos )
+{
+    if (pos < data || pos >= avail)
+        return End();
+
+    std::copy(pos + 1,avail, pos);
+    alloc.destory(--avail);
+    return pos;
 }
 
 template<typename T>
