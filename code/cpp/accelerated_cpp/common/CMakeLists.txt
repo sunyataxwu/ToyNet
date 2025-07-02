@@ -11,6 +11,8 @@ set(COMMON_LIST str.cpp         str_util.cpp
                                 picture_base.cpp
                                 picture.cpp
                                 string_picture.cpp
-                                frame_picture.cpp)
+                                frame_picture.cpp
+                                vec.hpp
+                                str.cpp)
 
 add_library(common SHARED ${COMMON_LIST})

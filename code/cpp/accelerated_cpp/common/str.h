@@ -127,7 +127,13 @@ public:
 public:
     void Create(size_type n, char c);
     template<typename In>
-    void Create(In beg, In end);
+    void Create(In beg, In end)
+    {
+        length_ = static_cast<size_type>(std::distance(beg, end) + 1);
+        ch_ptr = alloc.allocate(length_);
+        std::uninitialized_copy(beg, end, ch_ptr);
+        alloc.construct(ch_ptr + length_ - 1, '\0');
+    }
     void Uncreate();
 private:
     size_type               length_ = 0;

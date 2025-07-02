@@ -16,3 +16,9 @@ target_link_libraries(ch_06 common)
 
 add_executable(ch_07 chapter_07.cpp)
 target_link_libraries(ch_07 common)
+
+add_executable(ch_11 chapter_11.cpp)
+target_link_libraries(ch_11 common)
+
+add_executable(ch_12 chapter_12.cpp)
+target_link_libraries(ch_12 common)
