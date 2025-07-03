@@ -6,22 +6,26 @@
 #include <vector>
 #include <string>
 
+namespace ver2 { class StudentInfo; }
 class Core
 {
-    friend class StudentInfo3;
+    friend class ver2::StudentInfo;
 public:
     Core() : midterm_(0), final_(0) {}
-    Core(std::istream &in) { Read(in); }
-    virtual ~Core(){}
+    Core(std::istream &in)          { Read(in); }
+
+    virtual ~Core()                 {}
 public:
-    std::string name() const { return name_; }
-    virtual std::istream &Read(std::istream &in);
-    virtual double Grade() const;
-    virtual void Regrade(double d, double = 0) { final_ = d; }
-public:
-    virtual Core* clone() { return new Core(*this); }
+    std::string             Name() const { return name_; }
+
+    virtual std::istream&   Read(std::istream &in);
+    virtual double          Grade() const;
+    virtual void            Regrade(double d, double = 0) { final_ = d; }
 protected:
-    std::istream& ReadCommon(std::istream &in);
+    virtual Core*           Clone() { return new Core(*this); }
+
+    std::istream&           ReadCommon(std::istream &in);
+protected:
     double              midterm_, final_;
     std::vector<double> homework_;
 private:

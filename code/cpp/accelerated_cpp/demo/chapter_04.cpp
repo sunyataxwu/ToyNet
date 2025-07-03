@@ -6,15 +6,14 @@
 #include <cmath>
 
 #include "grade.h"
-#include "median.h"
 #include "student_info.h"
 
 using namespace std;
 
 int main()
 {
-    vector<StudentInfo>  students;
-    StudentInfo          record;
+    vector<ver0::StudentInfo>  students;
+    ver0::StudentInfo          record;
     string::size_type    max_len = 0;
 
     while (Read(cin, record))
@@ -29,9 +28,9 @@ int main()
             break;
     }
 
-    sort(students.begin(), students.end(), Compare);
+    sort(students.begin(), students.end(), ver0::Compare);
 
-    for (vector<StudentInfo>::size_type i = 0; i != students.size(); i++)
+    for (vector<ver0::StudentInfo>::size_type i = 0; i != students.size(); i++)
     {
         cout << setw(max_len + 1) << students[i].name;
 

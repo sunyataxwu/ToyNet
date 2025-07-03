@@ -1,5 +1,4 @@
 
-#include <exception>
 #include <cstdlib>
 #include <iostream>
 

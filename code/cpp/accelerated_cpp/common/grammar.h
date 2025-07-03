@@ -7,8 +7,6 @@
 #include <map>
 #include <iostream>
 
-#include "str_util.h"
-
 typedef std::vector<std::string> Rule;
 typedef std::vector<Rule> RuleCollection;
 typedef std::map<std::string, RuleCollection> Grammar;

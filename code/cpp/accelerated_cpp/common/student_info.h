@@ -6,6 +6,9 @@
 #include <string>
 #include <vector>
 
+namespace ver0
+{
+
 struct StudentInfo
 {
     std::string     name;
@@ -14,8 +17,6 @@ struct StudentInfo
 };
 
 extern bool Compare(const StudentInfo &, const StudentInfo &);
-
-extern std::istream& ReadHw(std::istream &in,  std::vector<double> &);
 extern std::istream& Read(std::istream &in, StudentInfo &);
 
 typedef double (*Analysis)(const std::vector<StudentInfo> &);
@@ -28,6 +29,8 @@ extern double AverageAnalysis(const std::vector<StudentInfo> &students);
 extern double OptimisticAnalysis(const std::vector<StudentInfo> &students);
 
 extern std::vector<StudentInfo> ExtractFails(std::vector<StudentInfo> &students);
+
+}
 
 namespace ver1
 {
@@ -52,25 +55,28 @@ private:
 
 #include "core.h"
 
-class StudentInfo3
+namespace ver2
+{
+
+class StudentInfo
 {
 public:
-    StudentInfo3() : cp_(0) {}
-    StudentInfo3(std::istream &in) : cp_(0) { Read(in); }
-    StudentInfo3(const StudentInfo3 &rhs);
-    StudentInfo3& operator=(const StudentInfo3 &rhs);
-    ~StudentInfo3() { delete cp_; }
+    StudentInfo() : cp_(0) {}
+    StudentInfo(std::istream &in) : cp_(0) { Read(in); }
+    StudentInfo(const StudentInfo &rhs);
+    StudentInfo& operator=(const StudentInfo &rhs);
+    ~StudentInfo() { delete cp_; }
 public:
     std::istream& Read(std::istream &in);
-    std::string name() const
+    std::string Name() const
     {
         if (cp_)
-            return cp_->name();
+            return cp_->Name();
         else
             throw std::domain_error("uninit student.");
     }
 
-    double grade() const
+    double Grade() const
     {
         if (cp_)
             return cp_->Grade();
@@ -78,14 +84,16 @@ public:
             throw std::domain_error("uninit student.");
     }
 
-    static bool compare(const StudentInfo3 &lhs,
-                        const StudentInfo3 &rhs)
+    static bool Compare(const StudentInfo &lhs,
+                        const StudentInfo &rhs)
     {
-        return lhs.name() < rhs.name();
+        return lhs.Name() < rhs.Name();
     }
 private:
     Core* cp_;
 };
+
+}
 
 #include "handle.hpp"
 
@@ -99,7 +107,7 @@ public:
     std::string name() const
     {
         if (cp_)
-            return cp_->name();
+            return cp_->Name();
         else
             throw std::domain_error("uninit student.");
     }

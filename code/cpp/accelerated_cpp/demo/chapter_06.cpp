@@ -51,8 +51,8 @@ int main2()
 
 int main()
 {
-    vector<StudentInfo> did, didnt;
-    StudentInfo student;
+    vector<ver0::StudentInfo> did, didnt;
+    ver0::StudentInfo student;
     int cnt = 0;
 
     while (Read(cin, student))
@@ -74,9 +74,9 @@ int main()
         return -1;
     }
 
-    WriteAnalysis(cout, "median analysis: ", MedianAnalysis, did, didnt);
-    WriteAnalysis(cout, "average", AverageAnalysis, did, didnt);
-    WriteAnalysis(cout, "optimistic", OptimisticAnalysis, did, didnt);
+    WriteAnalysis(cout, "median analysis: ", ver0::MedianAnalysis, did, didnt);
+    WriteAnalysis(cout, "average", ver0::AverageAnalysis, did, didnt);
+    WriteAnalysis(cout, "optimistic", ver0::OptimisticAnalysis, did, didnt);
 
     return 0;
 }

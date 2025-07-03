@@ -12,6 +12,10 @@
 
 using namespace std;
 
+
+namespace ver0
+{
+
 bool Compare(const StudentInfo &lhs, const StudentInfo &rhs)
 {
     return lhs.name < rhs.name;
@@ -44,22 +48,6 @@ istream& Read(istream &is, StudentInfo &s)
     }
 
     return is;
-}
-
-istream& ReadHw(istream &in, vector<double> &hw)
-{
-    cout << "Please enter homeworks (enter any non-number to finish): ";
-
-    hw.clear();
-    double x;
-    while (in >> x)  // 当输入非数字时自动停止
-        hw.push_back(x);
-
-    // 清除错误状态并忽略错误输入
-    in.clear();
-    in.ignore(numeric_limits<streamsize>::max(), '\n');
-
-    return in;
 }
 
 bool DidAllHW(const StudentInfo &s)
@@ -143,6 +131,8 @@ vector<StudentInfo> ExtractFails(vector<StudentInfo> &students)
     return fail;
 }
 
+}
+
 /***************************************************************************************************/
 
 namespace ver1
@@ -185,13 +175,15 @@ double StudentInfo::Grade() const
 
 #include "grad.h"
 
-istream& StudentInfo3::Read(istream &in)
+namespace ver2
+{
+
+istream& StudentInfo::Read(istream &in)
 {
     delete cp_;
 
     char c;
     in >> c;
-    cout << "1" << endl;
     if (c == 'u')
     {
         cp_ = new Core(in);
@@ -201,29 +193,30 @@ istream& StudentInfo3::Read(istream &in)
         cp_ = new Grad(in);
     }
 
-
     return in;
 }
 
-StudentInfo3::StudentInfo3(const StudentInfo3 &s) : cp_(0)
+StudentInfo::StudentInfo(const StudentInfo &s) : cp_(0)
 {
     if (s.cp_)
-        cp_ = s.cp_->clone();
+        cp_ = s.cp_->Clone();
 }
 
-StudentInfo3& StudentInfo3::operator=(const StudentInfo3 &s)
+StudentInfo& StudentInfo::operator=(const StudentInfo &s)
 {
     if (this != &s)
     {
         delete cp_;
 
         if (s.cp_)
-            cp_ = s.cp_->clone();
+            cp_ = s.cp_->Clone();
         else
             cp_ = 0;
     }
 
     return *this;
+}
+
 }
 
 /***************************************************************************************************/

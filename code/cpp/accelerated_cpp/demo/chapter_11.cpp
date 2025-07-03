@@ -16,8 +16,8 @@ int main()
     v1.push_back(1);
     cout << v1.Size() << ", " << v1[v1.Size() - 1] << endl;
 
-    Vec<StudentInfo> v3;
-    StudentInfo s1;
+    Vec<ver0::StudentInfo> v3;
+    ver0::StudentInfo s1;
 
     v3.push_back(s1);
     v3[0].name = "test";

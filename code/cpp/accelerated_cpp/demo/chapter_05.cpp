@@ -10,7 +10,7 @@ using namespace std;
 int main()
 {
     string s;
-    while (getline(cin, s)) 
+    while (getline(cin, s))
     {
         vector<string> v = Split(s);
 
