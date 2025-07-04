@@ -221,7 +221,10 @@ StudentInfo& StudentInfo::operator=(const StudentInfo &s)
 
 /***************************************************************************************************/
 
-istream& StudentInfo4::Read(istream &in)
+namespace ver3 
+{
+
+istream& StudentInfo::Read(istream &in)
 {
     char ch;
     in >> ch;
@@ -234,11 +237,13 @@ istream& StudentInfo4::Read(istream &in)
     return in;
 }
 
-void StudentInfo4::ReGrade(double final, double thesis)
+void StudentInfo::ReGrade(double final, double thesis)
 {
     cp_.make_unique();  // 控制是否复制
     if (cp_)
         cp_->Regrade(final, thesis);
     else
         throw runtime_error("regrade of unknow student.");
+}
+
 }

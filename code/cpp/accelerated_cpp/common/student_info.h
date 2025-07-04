@@ -37,14 +37,15 @@ namespace ver1
 class StudentInfo
 {
 public:
-    StudentInfo() : midterm_(0.0), final_(0.0) {}
-    StudentInfo(std::istream &in) { Read(in); }
+    StudentInfo()
+        : midterm_(0.0), final_(0.0)    {}
+    StudentInfo(std::istream &in)       { Read(in); }
 public:
-    std::string name() const { return name_; }
-    bool Valid() const { return !homework_.empty(); }
+    std::string     Name()  const   { return name_; }
+    bool            Valid() const   { return !homework_.empty(); }
 
-    std::istream &Read(std::istream &in);
-    double Grade() const;
+    std::istream&   Read(std::istream &in);
+    double          Grade() const;
 private:
     std::string         name_;
     double              midterm_, final_;
@@ -97,14 +98,17 @@ private:
 
 #include "handle.hpp"
 
-class StudentInfo4
+namespace ver3 
+{
+
+class StudentInfo
 {
 public:
-    StudentInfo4() {}
-    StudentInfo4(std::istream &in) { Read(in); }
+    StudentInfo() {}
+    StudentInfo(std::istream &in) { Read(in); }
 public:
-    std::istream& Read(std::istream &in);
-    std::string name() const
+    std::istream&   Read(std::istream &in);
+    std::string     Name() const
     {
         if (cp_)
             return cp_->Name();
@@ -120,15 +124,17 @@ public:
             throw std::domain_error("uninit student.");
     }
 
-    static bool compare(const StudentInfo4 &lhs,
-                        const StudentInfo4 &rhs)
+    static bool compare(const StudentInfo &lhs,
+                        const StudentInfo &rhs)
     {
-        return lhs.name() < rhs.name();
+        return lhs.Name() < rhs.Name();
     }
 
     void ReGrade(double final, double thesis);
 private:
     Ptr<Core> cp_;
 };
+
+}
 
 #endif //__ACCELERATED_CPP_STUDENT_INFO_H__

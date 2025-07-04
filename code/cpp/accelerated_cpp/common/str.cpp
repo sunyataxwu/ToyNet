@@ -4,6 +4,9 @@
 #include <memory>
 #include <stdexcept>
 
+namespace ver1 
+{
+
 std::ostream& operator<<(std::ostream &os, const Str &item)
 {
     for (Str::size_type i = 0; i != item.Size(); ++i)
@@ -46,7 +49,9 @@ char* Str::c_str()
     return data_.Begin();
 }
 
-namespace homework
+}
+
+namespace ver2
 {
 
 void Str::Create(size_type n, char c)
