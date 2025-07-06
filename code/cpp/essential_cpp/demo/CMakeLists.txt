@@ -1,24 +1,25 @@
+# 1. 输出目录别乱全局设，统一给每个目标定制：
+set(BIN_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/bin")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+# 2. 好基友一起创建，先不重复写重复的头文件路径
+# common 库已经公开了头文件路径，这里不用额外 include_directories
 
-add_executable(goodgay_build  "goodgay.cpp" "build.cpp")
+# 3. 创建两个exe，goodgay_build单独处理
+add_executable(goodgay_build goodgay.cpp build.cpp)
+set_target_properties(goodgay_build PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIR}
+)
 
-add_executable(chapter_02 "chapter_02.cpp")
-target_link_libraries(chapter_02 common)
-target_include_directories(chapter_02 PUBLIC ../common)
+# 4. 章节程序列表，批量创建
+set(CHAPTERS 02 03 04 05 06)
 
-add_executable(chapter_03 "chapter_03.cpp")
-target_link_libraries(chapter_03 common)
-target_include_directories(chapter_03 PUBLIC ../common)
+foreach(chapter ${CHAPTERS})
+    set(target chapter_${chapter})
+    add_executable(${target} chapter_${chapter}.cpp)
 
-add_executable(chapter_04 "chapter_04.cpp")
-target_link_libraries(chapter_04 common)
-target_include_directories(chapter_04 PUBLIC ../common)
+    target_link_libraries(${target} PRIVATE common)
 
-add_executable(chapter_05 "chapter_05.cpp")
-target_link_libraries(chapter_05 common)
-target_include_directories(chapter_05 PUBLIC ../common)
-
-add_executable(chapter_06 "chapter_06.cpp")
-target_link_libraries(chapter_06 common)
-target_include_directories(chapter_06 PUBLIC ../common)
+    set_target_properties(${target} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIR}
+    )
+endforeach()

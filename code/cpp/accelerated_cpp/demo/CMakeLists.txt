@@ -1,27 +1,24 @@
+# ===== demo/CMakeLists.txt =====
+# 把可执行章节分两拨：不依赖 / 依赖 common
+set(CH_NO_COMMON  02 03)
+set(CH_WITH_COMMON 04 05 06 07 11 12 13)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-add_executable(ch_02 chapter_02.cpp)
-add_executable(ch_03 chapter_03.cpp)
+# 输出统一放到 <repo>/bin，但“只管自己，不管别人”
+foreach(ch ${CH_NO_COMMON})
+    set(tgt ch_${ch})
+    add_executable(${tgt} chapter_${ch}.cpp)
 
-include_directories(../common)
+    set_target_properties(${tgt} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+endforeach()
 
-add_executable(ch_04 chapter_04.cpp)
-target_link_libraries(ch_04 common)
+foreach(ch ${CH_WITH_COMMON})
+    set(tgt ch_${ch})
+    add_executable(${tgt} chapter_${ch}.cpp)
 
-add_executable(ch_05 chapter_05.cpp)
-target_link_libraries(ch_05 common)
-
-add_executable(ch_06 chapter_06.cpp)
-target_link_libraries(ch_06 common)
-
-add_executable(ch_07 chapter_07.cpp)
-target_link_libraries(ch_07 common)
-
-add_executable(ch_11 chapter_11.cpp)
-target_link_libraries(ch_11 common)
-
-add_executable(ch_12 chapter_12.cpp)
-target_link_libraries(ch_12 common)
-
-add_executable(ch_13 chapter_13.cpp)
-target_link_libraries(ch_13 common)
+    target_link_libraries(${tgt} PRIVATE common)    # 头文件路径自动继承
+    set_target_properties(${tgt} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+endforeach()

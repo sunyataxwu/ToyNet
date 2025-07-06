@@ -1,5 +1,8 @@
+#include <iostream>
 
 #include "goodgay_build.h"
+
+using namespace std;
 
 GoodGay::GoodGay()
 {
