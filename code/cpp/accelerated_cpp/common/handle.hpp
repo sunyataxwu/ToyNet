@@ -61,20 +61,20 @@ template <typename T>
 class RefHandle
 {
 public:
-    RefHandle() : ref_ptr_(new size_t(1)), p_(0) {}
-    RefHandle(const RefHandle &rhs) : ref_ptr_(rhs.ref_ptr_), p_(rhs.p_)
+    RefHandle() : ptr_cnt_(new size_t(1)), p_(0) {}
+    RefHandle(const RefHandle &rhs) : ptr_cnt_(rhs.ptr_cnt_), p_(rhs.p_)
     {
-        ++*ref_ptr_;
+        ++*ptr_cnt_;
     }
     RefHandle& operator=(const RefHandle &rhs);
-    RefHandle(T *p) : ref_ptr_(new size_t(1)), p_(p) {}
+    RefHandle(T *p) : ptr_cnt_(new size_t(1)), p_(p) {}
     ~RefHandle();
 public:
     operator bool() const { return p_; }
     T& operator*() const;
     T* operator->() const;
 private:
-    size_t      *ref_ptr_;
+    size_t      *ptr_cnt_;
     T           *p_;
 };
 
@@ -83,13 +83,13 @@ RefHandle<T>& RefHandle<T>::operator=(const RefHandle& rhs)
 {
     if (this != &rhs) 
     {                                       // 先挡住自赋值
-        ++*rhs.ref_ptr_;                    // ① 右侧计数 +1
-        if (--*ref_ptr_ == 0)
+        ++*rhs.ptr_cnt_;                    // ① 右侧计数 +1
+        if (--*ptr_cnt_ == 0)
         {                                   // ② 左侧旧计数 -1
             delete p_;
-            delete ref_ptr_;
+            delete ptr_cnt_;
         }
-        ref_ptr_ = rhs.ref_ptr_;            // ③ 共享同一计数器
+        ptr_cnt_ = rhs.ptr_cnt_;            // ③ 共享同一计数器
         p_       = rhs.p_;
     }
     return *this;
@@ -118,9 +118,9 @@ T* RefHandle<T>::operator->() const
 template<typename T>
 RefHandle<T>::~RefHandle()
 {
-    if (--*ref_ptr_ == 0)
+    if (--*ptr_cnt_ == 0)
     {
-        delete ref_ptr_;
+        delete ptr_cnt_;
         delete p_;
     }
 }
@@ -162,9 +162,9 @@ template <typename T>
 class Ptr
 {
 public:
-    Ptr() : ref_ptr_(new size_t(1)), p_(0) {}
-    Ptr(T *p) : ref_ptr_(new size_t(1)), p_(p) {}
-    Ptr(const Ptr &rhs) : ref_ptr_(rhs.ref_ptr_), p_(rhs.p_) { ++*ref_ptr_; }
+    Ptr() : ptr_cnt_(new size_t(1)), p_(0) {}
+    Ptr(T *p) : ptr_cnt_(new size_t(1)), p_(p) {}
+    Ptr(const Ptr &rhs) : ptr_cnt_(rhs.ptr_cnt_), p_(rhs.p_) { ++*ptr_cnt_; }
     Ptr& operator=(const Ptr &rhs);
     ~Ptr();
 public:
@@ -174,16 +174,16 @@ public:
 public:
     void make_unique()
     {
-        if (*ref_ptr_ != 1)
+        if (*ptr_cnt_ != 1)
         {
-            --*ref_ptr_;
-            ref_ptr_ = new size_t(1);
+            --*ptr_cnt_;
+            ptr_cnt_ = new size_t(1);
             //p_ = p_ ? p_->Clone() : 0;
             p_ = p_ ? Clone(p_) : 0;
         }
     }
 private:
-    size_t      *ref_ptr_;
+    size_t      *ptr_cnt_;
     T           *p_;
 };
 
@@ -192,13 +192,13 @@ Ptr<T>& Ptr<T>::operator=(const Ptr &rhs)
 {
     if (this != &rhs) 
     {                                       // 先挡住自赋值
-        ++*rhs.ref_ptr_;                    // ① 右侧计数 +1
-        if (--*ref_ptr_ == 0)
+        ++*rhs.ptr_cnt_;                    // ① 右侧计数 +1
+        if (--*ptr_cnt_ == 0)
         {                                   // ② 左侧旧计数 -1
             delete p_;
-            delete ref_ptr_;
+            delete ptr_cnt_;
         }
-        ref_ptr_ = rhs.ref_ptr_;            // ③ 共享同一计数器
+        ptr_cnt_ = rhs.ptr_cnt_;            // ③ 共享同一计数器
         p_       = rhs.p_;
     }
     return *this;
@@ -221,9 +221,9 @@ T* Ptr<T>::operator->() const
 template<typename T>
 Ptr<T>::~Ptr()
 {
-    if (--*ref_ptr_ == 0)
+    if (--*ptr_cnt_ == 0)
     {
-        delete ref_ptr_;
+        delete ptr_cnt_;
         delete p_;
     }
 }
