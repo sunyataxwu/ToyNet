@@ -1,12 +1,12 @@
-# 1. 定义库目标，先不列源码
+# 1. 定义共享库目标 common，暂不列出源码文件
 add_library(common SHARED)
 
-# 2. 头文件路径只暴露给依赖 common 的目标
+# 2. 公开头文件目录，供依赖 common 的目标使用
 target_include_directories(common
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# 3. 源文件明确告诉目标，方便IDE识别和管理
+# 3. 指定库的源文件，方便IDE识别和项目管理
 target_sources(common
     PRIVATE
         common.cpp
@@ -20,7 +20,7 @@ target_sources(common
         lifo_stack.cpp
 )
 
-# 4. 独立设置库输出目录，避免影响其他目标
+# 4. 指定库文件输出目录，避免默认输出路径污染其他目标
 set_target_properties(common PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
 )

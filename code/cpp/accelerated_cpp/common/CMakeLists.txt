@@ -1,13 +1,15 @@
 # ===== common/CMakeLists.txt =====
-# 1. 目标先行：声明共享库
+
+# 1. 声明共享库目标 common
 add_library(common SHARED)
 
-# 2. 头文件可见范围 —— 只暴露给链接到 common 的伙计
+# 2. 头文件路径 —— 暴露给链接 common 的目标（PUBLIC）
 target_include_directories(common
-    PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}       # vec.hpp 等头文件就在这
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}   # common 目录下头文件（如 vec.hpp）
 )
 
-# 3. 把源文件塞给目标；重复 / 多余统统剔除
+# 3. 源文件与头文件分开声明，明确所有权和可见性
 target_sources(common
     PRIVATE
         str.cpp
@@ -21,17 +23,17 @@ target_sources(common
         picture.cpp
         picture_derived.cpp
     PUBLIC
-        vec.hpp                               # 外部目标需要 include 的头
+        vec.hpp                       # 需要暴露给外部的头文件
 )
 
-# 4. 只改自己，不污染其他库的输出目录
+# 4. 指定输出目录，避免污染其他目标
 set_target_properties(common PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
 )
 
-# 5. （可选）安装规则 —— 若以后要被 find_package 用到
+# 5. （可选）安装配置，方便以后用 find_package 或发布
 # install(TARGETS common
-#         EXPORT  accelerated_cppTargets
+#         EXPORT accelerated_cppTargets
 #         ARCHIVE DESTINATION lib
 #         LIBRARY DESTINATION lib
 #         RUNTIME DESTINATION bin)

@@ -1,25 +1,24 @@
-# 1. 输出目录别乱全局设，统一给每个目标定制：
+# 统一可执行文件输出目录
 set(BIN_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/bin")
 
-# 2. 好基友一起创建，先不重复写重复的头文件路径
-# common 库已经公开了头文件路径，这里不用额外 include_directories
-
-# 3. 创建两个exe，goodgay_build单独处理
+# 创建单独的可执行文件 goodgay_build
 add_executable(goodgay_build goodgay.cpp build.cpp)
 set_target_properties(goodgay_build PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIR}"
 )
 
-# 4. 章节程序列表，批量创建
+# 批量生成章节程序的可执行目标
 set(CHAPTERS 02 03 04 05 06)
 
-foreach(chapter ${CHAPTERS})
+foreach(chapter IN LISTS CHAPTERS)
     set(target chapter_${chapter})
     add_executable(${target} chapter_${chapter}.cpp)
 
+    # 链接 common 库，自动继承头文件路径
     target_link_libraries(${target} PRIVATE common)
 
+    # 设置可执行文件输出目录
     set_target_properties(${target} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIR}
+        RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIR}"
     )
 endforeach()
