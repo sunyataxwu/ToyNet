@@ -1,6 +1,9 @@
 # ===== demo/CMakeLists.txt =====
 
-# 最简配置，保证顶层 add_subdirectory(demo) 成功通过
-add_library(dummy_demo INTERFACE)
+# 添加可执行程序
+add_executable(demo_test test.c)
 
-# 以后这里你可以逐步加可执行文件或库
+# 可选：如果需要链接库，可以在这里添加 target_link_libraries(demo_test xxx)
+set_target_properties(demo_test PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
